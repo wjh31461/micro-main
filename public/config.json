@@ -1,0 +1,21 @@
+{
+  "app": {
+    "development": {
+
+    },
+    "production": {
+
+    }
+  },
+  "api": {
+
+  },
+  "custom": {
+    "activeRule": [],
+    "systemName": "microMain",
+    "copyright": "jinghaihan",
+    "menuLayout": "",
+    "menuTheme": "light",
+    "keepAlive": false
+  }
+}

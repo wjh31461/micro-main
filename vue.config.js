@@ -1,7 +1,7 @@
 const path = require('path')
 var webpack = require('webpack')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
@@ -9,7 +9,7 @@ function resolve(dir) {
 module.exports = {
   publicPath: '/',
 
-  transpileDependencies: ['ant-design-vue'],
+  transpileDependencies: ['resize-detector', 'ant-design-vue'],
 
   configureWebpack: {
     plugins: [
@@ -26,13 +26,16 @@ module.exports = {
     config.resolve.alias
       .set('public', resolve('public'))
       .set('@', resolve('src'))
+      .set('@api', resolve('src/api'))
       .set('@assets', resolve('src/assets'))
       .set('@comp', resolve('src/components'))
+      .set('@utils', resolve('src/utils'))
       .set('@views', resolve('src/views'))
   },
 
   devServer: {
     open: true,
-    inline: true,
-  },
+    inline: true // 打开热更新
+  }
+
 }

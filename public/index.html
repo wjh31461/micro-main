@@ -8,6 +8,35 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <script>
+      let storage = window.sessionStorage
+      let config = storage.getItem('microConfig')
+      if(config){
+        // 如果storage存在配置则进行赋值
+        let data = JSON.parse(config)
+        Object.keys(data).forEach(key => {
+          window[key] = data[key]
+        })
+      }else{
+        // 如果不存在storage请求config文件
+        let url = '/config.json?' + Math.random()
+        let request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.send()
+
+        request.onreadystatechange = () => {
+          if(request.readyState === 4){
+            if(request.status === 200){
+              let data = JSON.parse(request.response)
+              storage.setItem('microConfig', request.response)
+              Object.keys(data).forEach(key => {
+                window[key] = data[key]
+              })
+            }
+          }
+        }
+      }
+    </script>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
