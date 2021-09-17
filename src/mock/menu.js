@@ -1,51 +1,63 @@
 const menu = [
   {
-    name: '首页',
+    title: '首页',
+    icon: '',
     target: 'home',
     activeRule: '',
     children: []
   },
   {
-    name: '导航栏1',
+    title: '导航栏1',
+    icon: '',
     target: 'nav1',
     activeRule: '',
     children: [
       {
-        name: '子导航栏1',
+        title: '子导航栏1',
+        icon: '',
         target: 'subnav1',
         activeRule: '',
         children: [
           {
-            name: '菜单1',
+            title: '菜单1',
+            icon: '',
             target: 'menu1',
-            activeRule: ''
+            activeRule: '',
+            children: []
           },
           {
-            name: '菜单2',
+            title: '菜单2',
+            icon: '',
             target: 'menu2',
-            activeRule: ''
+            activeRule: '',
+            children: []
           },
           {
-            name: '菜单3',
+            title: '菜单3',
+            icon: '',
             target: 'menu3',
-            activeRule: ''
+            activeRule: '',
+            children: []
           }
         ]
       },
       {
-        name: '子导航栏2',
+        title: '子导航栏2',
+        icon: '',
         target: 'subnav2',
         activeRule: '',
         children: []
       },
       {
-        name: '子导航栏3',
+        title: '子导航栏3',
+        icon: '',
         target: 'subnav3',
         activeRule: '',
         children: []
       },
       {
-        name: '子导航栏4',
+        title: '子导航栏4',
+        icon: '',
         target: 'subnav4',
         activeRule: '',
         children: []

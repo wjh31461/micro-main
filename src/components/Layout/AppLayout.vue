@@ -20,6 +20,7 @@
         </a-layout-footer>
       </a-layout>
     </a-layout>
+    
   </a-layout>
 </template>
 
@@ -38,7 +39,7 @@ export default {
     }
   },
   created () {
-    console.log(this.theme)
+    
   }
 }
 </script>

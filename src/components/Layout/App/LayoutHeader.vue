@@ -11,16 +11,16 @@
     </div>
     <!-- 系统操作区域 -->
     <div class="action-container container">
-      <actions></actions>
+      <action></action>
     </div>
   </div>
 </template>
 
 <script>
-import actions from '@comp/Action/index.vue'
+import action from '@comp/Action/index.vue'
 
 export default {
-  components: { actions },
+  components: { action },
   data () {
     return {
       systemName: window.custom.systemName
