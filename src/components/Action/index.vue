@@ -1,5 +1,5 @@
 <template>
-  <div class="actions-container">
+  <div class="action-container">
     <a-icon class="action-icon" type="logout" title="退出登录" v-if="hasLogin"></a-icon>
     <a-icon class="action-icon" type="setting" title="设置"></a-icon>
     <a-icon class="action-icon" type="bell" title="提醒"></a-icon>
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .actions-container{
+  .action-container{
     height: 100%;
     display: flex;
     flex-direction: row-reverse;

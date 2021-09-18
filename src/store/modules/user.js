@@ -61,7 +61,6 @@ const user = {
     // 获取菜单
     Navigation ({ commit, state }) {
       let data = menu
-      // eslint-disable-next-line no-unused-vars
       let navs = []; let menus = []; let activeRule
       if (window.custom.menuLayout === 'nav') {
         // 导航栏模式布局
@@ -70,7 +69,7 @@ const user = {
             title: nav.title,
             icon: nav.icon ? nav.icon : 'table',
             target: nav.target,
-            path: nav.activeRule + '/' + nav.target,
+            path: nav.activeRule + nav.target,
             menus: []
           })
 

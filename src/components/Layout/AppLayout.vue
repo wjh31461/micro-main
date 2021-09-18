@@ -6,19 +6,19 @@
     </a-layout-header>
     <a-layout>
       <!-- 布局侧边栏 -->
-      <transition name="slide-fade">
+      <transition>
         <a-layout-sider v-model="collapsed"
                         :theme="theme"
                         :trigger="null"
-                        :width="collapsed ? 80 : 260"
+                        :width="!fullScreen ? (collapsed ? 80 : 260) : 0"
                         class="layout-sider"
                         v-show="!fullScreen">
           <layout-sider @full="handleFullScreen"></layout-sider>
           <TRIGGER :class="`trigger ${theme}-trigger`" @toggle="handleToggle"></TRIGGER>
         </a-layout-sider>
       </transition>
-      
-      <a-layout>
+      <!-- 内容/底部区域 -->
+      <a-layout >
         <!-- 布局内容 -->
         <a-layout-content class="layout-content">
           <layout-content></layout-content>
@@ -64,17 +64,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .slide-fade-enter-active {
-    transition: all .3s;
-  }
-  .slide-fade-leave-active {
-    transition: all .3s;
-  }
-  .slide-fade-enter,
-  .slide-fade-leave-to {
-    transform: translateX(-260px);
-    opacity: 0;
-  }
   .layout-container{
     height: 100%;
     .layout-header{
@@ -112,9 +101,6 @@ export default {
         background: #001529;
         color: #fff;
       }
-    }
-    .layout-content{
-      // background: #1890ff;
     }
     .layout-footer{
       height: 50px;

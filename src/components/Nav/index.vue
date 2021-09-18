@@ -20,31 +20,28 @@ export default {
     }
   },
   methods: {
-    handleClick (menu) {
-      let path = '/' + menu.keyPath.reverse().join('/')
-      let nav = this.navs.filter(nav => nav.path === path)[0]
+    handleClick (nav) {
       this.$store.commit('user/SET_MENUS', nav.menus)
       if (!nav.menus || !nav.menus.length) {
-        if (this.$route.fullPath !== path) {
-          this.$router.replace(path)
+        if (this.$route.fullPath !== nav.path) {
+          this.$router.replace(nav.path)
+          this.$bus.$emit('onUpdateTab', nav)
         }
       }
     }
   },
   render () {
+    let self = this
+    
     const navProps = {
       mode: 'horizontal',
       theme: window.custom.menuTheme
     }
 
-    const navEvents = {
-      click: this.handleClick
-    }
-
     function renderNavs (navs) {
       return navs.map(nav => {
         return (
-          <a-menu-item key={ nav.target }>
+          <a-menu-item key={ nav.target } on={ { click: () => self.handleClick(nav) } }>
             { nav.icon && <a-icon type={ nav.icon } /> }
             <span>{ nav.title }</span>
           </a-menu-item>
@@ -53,8 +50,8 @@ export default {
     }
 
     return (
-      <a-menu props={ navProps } on={ navEvents }>
-        {renderNavs(this.navs)}
+      <a-menu props={ navProps }>
+        {renderNavs(self.navs)}
       </a-menu>
     )
   }

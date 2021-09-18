@@ -8,12 +8,12 @@ function recursiveMenu (children, target, arr) {
   children.forEach((child, index) => {
     let path
     if (target) {
-      path = `${target}/${child.target}`
+      path = `/${target}/${child.target}`
     } else {
-      path = `${child.target}`
+      path = `/${child.target}`
     }
     if (child.activeRule) {
-      path += child.activeRule
+      path = child.activeRule.slice(0, child.activeRule.length - 1) + path
     }
     arr.push({
       title: child.title,

@@ -27,18 +27,16 @@ export default {
   },
   methods: {
     handleClick (menu) {
-      let path = '/' + menu.keyPath.reverse().join('/')
-      this.$router.push(path)
+      this.$router.push(menu.path)
+      this.$bus.$emit('onUpdateTab', menu)
     }
   },
   render () {
+    let self = this
+
     const menuProps = {
       mode: 'inline',
       theme: window.custom.menuTheme
-    }
-
-    const menuEvents = {
-      click: this.handleClick
     }
 
     function renderMenus (menus) {
@@ -55,7 +53,7 @@ export default {
           )
         } else {
           return (
-            <a-menu-item key={ menu.target }>
+            <a-menu-item key={ menu.target } on={ { click: () => self.handleClick(menu) } }>
               { menu.icon && <a-icon type={ menu.icon } /> }
               <span>{ menu.title }</span>
             </a-menu-item>
@@ -66,7 +64,7 @@ export default {
 
     return (
       <div class="menu-wrapper">
-        <a-menu props={ menuProps } on={ menuEvents }>
+        <a-menu props={ menuProps }>
           {renderMenus(this.menus)}
         </a-menu>
       </div>

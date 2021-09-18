@@ -10,31 +10,26 @@
   <body>
     <script>
       let storage = window.sessionStorage
-      let config = storage.getItem('microConfig')
-      if(config){
+      let data = storage.getItem('microConfig')
+      if(data){
         // 如果storage存在配置则进行赋值
-        let data = JSON.parse(config)
-        Object.keys(data).forEach(key => {
-          window[key] = data[key]
-        })
+        let config = JSON.parse(data)
+        initConfig(config)
       }else{
         // 如果不存在storage请求config文件
         let url = '/config.json?' + Math.random()
-        let request = new XMLHttpRequest()
-        request.open('GET', url, true)
-        request.send()
-
-        request.onreadystatechange = () => {
-          if(request.readyState === 4){
-            if(request.status === 200){
-              let data = JSON.parse(request.response)
-              storage.setItem('microConfig', request.response)
-              Object.keys(data).forEach(key => {
-                window[key] = data[key]
-              })
-            }
-          }
-        }
+        fetch(url).then((response) => {
+          return response.json()
+        }).then((config) => {
+          storage.setItem('microConfig', JSON.stringify(config))
+          initConfig(config)
+        })
+      }
+      // 初始化微前端全局配置
+      function initConfig(data){
+        Object.keys(data).forEach(key => {
+          window[key] = data[key]
+        })
       }
     </script>
     <noscript>
