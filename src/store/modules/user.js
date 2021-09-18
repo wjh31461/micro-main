@@ -68,17 +68,15 @@ const user = {
         data.forEach((nav, index) => {
           navs.push({
             title: nav.title,
-            icon: nav.icon,
+            icon: nav.icon ? nav.icon : 'table',
             target: nav.target,
-            path: '',
-            children: []
+            path: nav.activeRule + '/' + nav.target,
+            menus: []
           })
 
           if (nav.children && nav.children.length) {
             // 如果存在子菜单
-            navs[index].children = handleMenus(nav.children, nav.target)
-          } else {
-            navs[index].path = nav.activeRule + '/' + nav.target
+            navs[index].menus = handleMenus(nav.children, nav.target)
           }
         })
         commit('SET_NAVS', navs)

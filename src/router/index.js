@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+// import NProgress from 'nprogress'
+// import 'nprogress/nprogress.css'
 
 Vue.use(Router)
 
@@ -14,12 +14,12 @@ function createRouter () {
 
 const router = createRouter()
 
-router.beforeEach((to, from, next) => {
-  NProgress.start()
-})
+// router.beforeEach((to, from, next) => {
+//   NProgress.start()
+// })
 
-router.afterEach(() => {
-  NProgress.done()
-})
+// router.afterEach(() => {
+//   NProgress.done()
+// })
 
 export default router

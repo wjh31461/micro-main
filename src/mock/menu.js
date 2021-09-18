@@ -63,6 +63,13 @@ const menu = [
         children: []
       }
     ]
+  },
+  {
+    title: '导航栏2',
+    icon: '',
+    target: 'nav2',
+    activeRule: '',
+    children: []
   }
 ]
 

@@ -70,5 +70,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+  ::v-deep.ant-menu-inline{
+    border: none;
+    .ant-menu-item,
+    .ant-menu-submenu-title{
+      font-size: 15px;
+    }
+  }
 </style>

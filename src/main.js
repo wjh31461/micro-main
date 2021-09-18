@@ -13,10 +13,9 @@ new Vue({
   render: h => h(App),
   created () {
     initStore()
+    // 如果不存在登录页面，直接加载页面
     if (!window.customElements.hasLogin) {
-      store.dispatch('user/Navigation').then(() => {
-        
-      })
+      store.dispatch('user/Navigation')
     }
   }
 }).$mount('#app')

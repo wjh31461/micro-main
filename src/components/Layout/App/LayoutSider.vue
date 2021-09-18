@@ -1,13 +1,13 @@
 <template>
   <div>
-    <menus></menus>
+    <MENU></MENU>
   </div>
 </template>
 
 <script>
-import menus from '@comp/Menu/index.vue'
+import MENU from '@comp/Menu/index.vue'
 export default {
-  components: { menus }
+  components: { MENU }
 }
 </script>
 

@@ -1,28 +1,30 @@
 <template>
   <div class="header-container">
     <!-- logo区域 -->
-    <div class="logo-container container">
+    <div :class="`logo-container ${theme}-logo-container container`">
       <div class="logo"></div>
       <div class="name">{{systemName}}</div>
     </div>
     <!-- 导航栏区域 -->
     <div class="nav-container container">
-
+      <NAV></NAV>
     </div>
     <!-- 系统操作区域 -->
     <div class="action-container container">
-      <action></action>
+      <ACTION></ACTION>
     </div>
   </div>
 </template>
 
 <script>
-import action from '@comp/Action/index.vue'
+import NAV from '@comp/Nav/index.vue'
+import ACTION from '@comp/Action/index.vue'
 
 export default {
-  components: { action },
+  components: { NAV, ACTION },
   data () {
     return {
+      theme: window.custom.menuTheme,
       systemName: window.custom.systemName
     }
   }
@@ -33,6 +35,7 @@ export default {
   .header-container{
     height: 100%;
     display: flex;
+    flex: 1 0 1;
     .container{
       height: 100%;
     }
@@ -43,7 +46,13 @@ export default {
       justify-content: center;
       font-size: 20px;
       font-weight: bold;
-      background: #2B3B49;
+    }
+    .dark-logo-container{
+      background: hsl(208, 26%, 23%);
+      color: #fff;
+    }
+    .light-logo-container{
+      background: #1890ff;
       color: #fff;
     }
     .nav-container{

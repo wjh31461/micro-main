@@ -14,7 +14,7 @@
     "activeRule": [],
     "systemName": "microMain",
     "copyright": "jinghaihan",
-    "menuLayout": "menu",
+    "menuLayout": "nav",
     "menuTheme": "light",
     "keepAlive": false,
     "hasLogin": false
