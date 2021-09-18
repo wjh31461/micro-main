@@ -2,12 +2,20 @@
 export default {
   data () {
     return {
-      menus: []
+      menus: [],
+      selectedKeys: [],
+      openKeys: []
     }
   },
   computed: {
     listenMenus () {
       return this.$store.state.user.menus
+    },
+    listenSelectedKeys () {
+      return this.$store.state.selected.menuSelectedKeys
+    },
+    listenOpenKeys () {
+      return this.$store.state.selected.menuOpenKeys
     }
   },
   watch: {
@@ -23,12 +31,32 @@ export default {
           this.$emit('full', false)
         }
       }
+    },
+    listenSelectedKeys: {
+      deep: true,
+      immediate: true,
+      handler (selectedKeys) {
+        this.selectedKeys = _.cloneDeep(selectedKeys)
+      }
+    },
+    listenOpenKeys: {
+      deep: true,
+      immediate: true,
+      handler (openKeys) {
+        this.openKeys = _.cloneDeep(openKeys)
+      }
     }
   },
   methods: {
     handleClick (menu) {
+      this.selectedKeys = [menu.target]
       this.$router.push(menu.path)
       this.$bus.$emit('onUpdateTab', menu)
+      this.$store.commit('selected/SET_MENUSELECTEDKEYS', this.selectedKeys)
+    },
+    handleOpen (openKeys) {
+      this.openKeys = openKeys
+      this.$store.commit('selected/SET_MENUOPENKEYS', this.openKeys)
     }
   },
   render () {
@@ -36,7 +64,13 @@ export default {
 
     const menuProps = {
       mode: 'inline',
-      theme: window.custom.menuTheme
+      theme: window.custom.menuTheme,
+      selectedKeys: self.selectedKeys,
+      openKeys: self.openKeys
+    }
+
+    const menuEvents = {
+      openChange: self.handleOpen
     }
 
     function renderMenus (menus) {
@@ -64,7 +98,7 @@ export default {
 
     return (
       <div class="menu-wrapper">
-        <a-menu props={ menuProps }>
+        <a-menu props={ menuProps } on={ menuEvents }>
           {renderMenus(this.menus)}
         </a-menu>
       </div>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from './modules/user'
+import selected from './modules/selected'
 
 export { default as initStore } from './initStore'
 
@@ -9,7 +10,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   modules: {
-    user
+    user,
+    selected
   },
   state: {},
   mutations: {},

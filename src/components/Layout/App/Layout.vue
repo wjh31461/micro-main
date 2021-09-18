@@ -6,7 +6,7 @@
     </div>
     <!-- 子应用渲染容器 -->
     <div class="app-container">
-      <slot></slot>
+      微应用渲染区域
     </div>
   </div>
 </template>

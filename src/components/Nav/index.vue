@@ -2,12 +2,16 @@
 export default {
   data () {
     return {
-      navs: []
+      navs: [],
+      selectedKeys: []
     }
   },
   computed: {
     listenNavs () {
       return this.$store.state.user.navs
+    },
+    listenSelectedKeys () {
+      return this.$store.state.selected.navSelectedKeys
     }
   },
   watch: {
@@ -17,11 +21,19 @@ export default {
       handler: function (navs) {
         this.navs = _.cloneDeep(navs)
       }
+    },
+    listenSelectedKeys: {
+      deep: true,
+      immediate: true,
+      handler (selectedKeys) {
+        this.selectedKeys = _.cloneDeep(selectedKeys)
+      }
     }
   },
   methods: {
     handleClick (nav) {
       this.$store.commit('user/SET_MENUS', nav.menus)
+      this.$store.commit('selected/SET_NAVKEYS', [nav.target])
       if (!nav.menus || !nav.menus.length) {
         if (this.$route.fullPath !== nav.path) {
           this.$router.replace(nav.path)
@@ -35,7 +47,8 @@ export default {
     
     const navProps = {
       mode: 'horizontal',
-      theme: window.custom.menuTheme
+      theme: window.custom.menuTheme,
+      selectedKeys: self.selectedKeys
     }
 
     function renderNavs (navs) {

@@ -4,7 +4,7 @@
             hide-add 
             type="editable-card"
             @change="handleChange">
-            <a-tab-pane v-for="tab in tabs" :key="tab.path" :closable="tabs.length > 1">
+            <a-tab-pane class="tab-pane" v-for="tab in tabs" :key="tab.path" :closable="tabs.length > 1">
               <div slot="tab" class="tab-card">
                 <span class="title">{{tab.title}}</span>
                 <a-icon class="close" type="close"></a-icon>
@@ -20,6 +20,7 @@ export default {
     return {
       activeTab: null,
       tabs: []
+
     }
   },
   mounted () {
@@ -49,8 +50,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  ::v-deep.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab{
+    border: none;
+    background: #F5F5F5;
+  }
+  ::v-deep.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+    background: #fff;
+  }
   .tab-container{
     height: 100%;
+    .tab-pane{
+      height: 0;
+    }
     .tab-card{
       .close{
         color: #8B98A6;

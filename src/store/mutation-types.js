@@ -3,3 +3,7 @@ export const ACCESS_SECURITY = 'ACCESS_SECURITY'
 export const ACCESS_TOKEN = 'ACCESS_TOKEN'
 export const NAVS = 'NAVS'
 export const MENUS = 'MENUS'
+
+export const NAV_SELECTEDKEYS = 'NAV_SELECTEDKEYS'
+export const MENU_SELECTEDKEYS = 'MENU_SELECTEDKEYS'
+export const MENU_OPENKEYS = 'MENU_OPENKEYS'
