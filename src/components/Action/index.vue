@@ -25,9 +25,15 @@ export default {
     align-items: center;
     padding: 0 8px;
     .action-icon{
-      font-size: 24px;
-      margin: 0 12px;
+      font-size: 22px;
       cursor: pointer;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding: 0 12px;
+    }
+    .action-icon:hover{
+      background: rgba(0,0,0,.025);
     }
   }
 </style>

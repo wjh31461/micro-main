@@ -25,7 +25,9 @@ export default {
       let nav = this.navs.filter(nav => nav.path === path)[0]
       this.$store.commit('user/SET_MENUS', nav.menus)
       if (!nav.menus || !nav.menus.length) {
-        this.$router.replace(path)
+        if (this.$route.fullPath !== path) {
+          this.$router.replace(path)
+        }
       }
     }
   },

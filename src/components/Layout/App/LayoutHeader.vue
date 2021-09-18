@@ -2,7 +2,9 @@
   <div class="header-container">
     <!-- logo区域 -->
     <div :class="`logo-container ${theme}-logo-container container`">
-      <div class="logo"></div>
+      <div class="logo">
+        <img :src="require('@/assets/logo.png')" />
+      </div>
       <div class="name">{{systemName}}</div>
     </div>
     <!-- 导航栏区域 -->
@@ -43,9 +45,18 @@ export default {
       width: 260px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       font-size: 20px;
       font-weight: bold;
+      padding: 0 12px;
+      .logo{
+        width: 60px;
+        height: 60px;
+        >img{
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
     .dark-logo-container{
       background: hsl(208, 26%, 23%);

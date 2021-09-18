@@ -13,52 +13,52 @@ const menu = [
     activeRule: '',
     children: [
       {
-        title: '子导航栏1',
+        title: '二级菜单1',
         icon: '',
-        target: 'subnav1',
+        target: 'menu1',
         activeRule: '',
         children: [
           {
-            title: '菜单1',
+            title: '三级菜单1',
             icon: '',
-            target: 'menu1',
+            target: 'subMenu1',
             activeRule: '',
             children: []
           },
           {
-            title: '菜单2',
+            title: '三级菜单2',
             icon: '',
-            target: 'menu2',
+            target: 'subMenu2',
             activeRule: '',
             children: []
           },
           {
-            title: '菜单3',
+            title: '三级菜单3',
             icon: '',
-            target: 'menu3',
+            target: 'subMenu3',
             activeRule: '',
             children: []
           }
         ]
       },
       {
-        title: '子导航栏2',
+        title: '二级菜单2',
         icon: '',
-        target: 'subnav2',
+        target: 'menu2',
         activeRule: '',
         children: []
       },
       {
-        title: '子导航栏3',
+        title: '二级菜单3',
         icon: '',
-        target: 'subnav3',
+        target: 'menu3',
         activeRule: '',
         children: []
       },
       {
-        title: '子导航栏4',
+        title: '二级菜单4',
         icon: '',
-        target: 'subnav4',
+        target: 'menu4',
         activeRule: '',
         children: []
       }

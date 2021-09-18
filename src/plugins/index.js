@@ -1,3 +1,3 @@
 import './ant-design-vue'
 import './vue-ls'
-import './lodash'
+import './bus'

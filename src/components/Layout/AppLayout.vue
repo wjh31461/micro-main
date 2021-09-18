@@ -6,9 +6,18 @@
     </a-layout-header>
     <a-layout>
       <!-- 布局侧边栏 -->
-      <a-layout-sider :theme="theme" class="layout-sider">
-        <layout-sider></layout-sider>
-      </a-layout-sider>
+      <transition name="slide-fade">
+        <a-layout-sider v-model="collapsed"
+                        :theme="theme"
+                        :trigger="null"
+                        :width="collapsed ? 80 : 260"
+                        class="layout-sider"
+                        v-show="!fullScreen">
+          <layout-sider @full="handleFullScreen"></layout-sider>
+          <TRIGGER :class="`trigger ${theme}-trigger`" @toggle="handleToggle"></TRIGGER>
+        </a-layout-sider>
+      </transition>
+      
       <a-layout>
         <!-- 布局内容 -->
         <a-layout-content class="layout-content">
@@ -20,7 +29,6 @@
         </a-layout-footer>
       </a-layout>
     </a-layout>
-    
   </a-layout>
 </template>
 
@@ -29,22 +37,44 @@ import LayoutHeader from './App/LayoutHeader.vue'
 import LayoutSider from './App/LayoutSider.vue'
 import LayoutContent from './App/Layout.vue'
 import LayoutFooter from './App/LayoutFooter.vue'
+import TRIGGER from '@comp/Trigger/index.vue'
 
 export default {
-  components: { LayoutHeader, LayoutSider, LayoutContent, LayoutFooter },
+  components: { LayoutHeader, LayoutSider, LayoutContent, LayoutFooter, TRIGGER },
   data () {
     return {
       theme: window.custom.menuTheme,
-      copyright: window.custom.copyright
+      copyright: window.custom.copyright,
+      collapsed: false,
+      fullScreen: true
     }
   },
   created () {
     
+  },
+  methods: {
+    handleToggle () {
+      this.collapsed = !this.collapsed
+    },
+    handleFullScreen (fullScreen) {
+      this.fullScreen = fullScreen
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
+  .slide-fade-enter-active {
+    transition: all .3s;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s;
+  }
+  .slide-fade-enter,
+  .slide-fade-leave-to {
+    transform: translateX(-260px);
+    opacity: 0;
+  }
   .layout-container{
     height: 100%;
     .layout-header{
@@ -56,21 +86,36 @@ export default {
     }
     .light-layout-header{
       background: #fff;
-      color: #333;
+      color: #999;
     }
     .dark-layout-header{
       background: #001529;
       color: #ddd;
     }
     .layout-sider{
-      flex: 0 0 260px !important;
-      max-width: 260px !important;
       box-shadow: 3px 0px 8px 0px rgba(185, 200, 210, 0.5);
       z-index: 90;
+      position: relative;
+      .trigger{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: -24px;
+        margin: auto;
+        z-index: 110;
+      }
+      .light-trigger{
+        background: #fff;
+        color: #999;
+      }
+      .dark-trigger{
+        background: #001529;
+        color: #fff;
+      }
     }
-    // .layout-content{
-      
-    // }
+    .layout-content{
+      // background: #1890ff;
+    }
     .layout-footer{
       height: 50px;
       box-sizing: border-box;

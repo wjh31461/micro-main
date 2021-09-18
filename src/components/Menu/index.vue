@@ -16,6 +16,12 @@ export default {
       immediate: true,
       handler (menus) {
         this.menus = _.cloneDeep(menus)
+        // 如果当前没有菜单，则全屏展示content部分
+        if (!this.menus.length) {
+          this.$emit('full', true)
+        } else {
+          this.$emit('full', false)
+        }
       }
     }
   },
