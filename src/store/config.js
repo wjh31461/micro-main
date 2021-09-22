@@ -6,10 +6,5 @@ export default {
     navs: [],
     menus: [],
     routes: []
-  },
-  selected: {
-    navSelectedKeys: [],
-    menuSelectedKeys: [],
-    menuOpenKeys: []
   }
 }

@@ -10,12 +10,6 @@ export default {
   computed: {
     listenMenus () {
       return this.$store.state.user.menus
-    },
-    listenSelectedKeys () {
-      return this.$store.state.selected.menuSelectedKeys
-    },
-    listenOpenKeys () {
-      return this.$store.state.selected.menuOpenKeys
     }
   },
   watch: {
@@ -31,32 +25,16 @@ export default {
           this.$emit('full', false)
         }
       }
-    },
-    listenSelectedKeys: {
-      deep: true,
-      immediate: true,
-      handler (selectedKeys) {
-        this.selectedKeys = _.cloneDeep(selectedKeys)
-      }
-    },
-    listenOpenKeys: {
-      deep: true,
-      immediate: true,
-      handler (openKeys) {
-        this.openKeys = _.cloneDeep(openKeys)
-      }
     }
   },
   methods: {
     handleClick (menu) {
-      this.selectedKeys = [menu.target]
+      this.selectedKeys = [menu.key]
       this.$router.push(menu.path)
       this.$bus.$emit('onUpdateTab', menu)
-      this.$store.commit('selected/SET_MENUSELECTEDKEYS', this.selectedKeys)
     },
     handleOpen (openKeys) {
       this.openKeys = openKeys
-      this.$store.commit('selected/SET_MENUOPENKEYS', this.openKeys)
     }
   },
   render () {
@@ -77,7 +55,7 @@ export default {
       return menus.map(menu => {
         if (menu.children && menu.children.length) {
           return (
-            <a-sub-menu key={ menu.target }>
+            <a-sub-menu key={ menu.key }>
               <span slot="title">
                 { menu.icon && <a-icon type={ menu.icon } /> }
                 <span>{ menu.title }</span>
@@ -87,7 +65,7 @@ export default {
           )
         } else {
           return (
-            <a-menu-item key={ menu.target } on={ { click: () => self.handleClick(menu) } }>
+            <a-menu-item key={ menu.key } on={ { click: () => self.handleClick(menu) } }>
               { menu.icon && <a-icon type={ menu.icon } /> }
               <span>{ menu.title }</span>
             </a-menu-item>

@@ -9,9 +9,6 @@ export default {
   computed: {
     listenNavs () {
       return this.$store.state.user.navs
-    },
-    listenSelectedKeys () {
-      return this.$store.state.selected.navSelectedKeys
     }
   },
   watch: {
@@ -21,24 +18,16 @@ export default {
       handler: function (navs) {
         this.navs = _.cloneDeep(navs)
       }
-    },
-    listenSelectedKeys: {
-      deep: true,
-      immediate: true,
-      handler (selectedKeys) {
-        this.selectedKeys = _.cloneDeep(selectedKeys)
-      }
     }
   },
   methods: {
     handleClick (nav) {
       this.$store.commit('user/SET_MENUS', nav.menus)
-      this.$store.commit('selected/SET_NAVKEYS', [nav.target])
-      if (!nav.menus || !nav.menus.length) {
-        if (this.$route.fullPath !== nav.path) {
-          this.$router.replace(nav.path)
-          this.$bus.$emit('onUpdateTab', nav)
-        }
+      this.selectedKeys = [nav.key]
+      // 不存在子菜单/且当前路由地址与导航栏地址不同
+      if ((!nav.menus || !nav.menus.length) && (this.$route.fullPath !== nav.path)) {
+        this.$router.push(nav.path)
+        this.$bus.$emit('onUpdateTab', nav)
       }
     }
   },
@@ -54,7 +43,7 @@ export default {
     function renderNavs (navs) {
       return navs.map(nav => {
         return (
-          <a-menu-item key={ nav.target } on={ { click: () => self.handleClick(nav) } }>
+          <a-menu-item key={ nav.key } on={ { click: () => self.handleClick(nav) } }>
             { nav.icon && <a-icon type={ nav.icon } /> }
             <span>{ nav.title }</span>
           </a-menu-item>

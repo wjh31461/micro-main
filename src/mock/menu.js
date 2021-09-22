@@ -9,14 +9,14 @@ const menu = [
   {
     title: '导航栏1',
     icon: '',
-    target: 'nav1',
-    activeRule: '/micro/',
+    target: '',
+    activeRule: '',
     children: [
       {
         title: '二级菜单1',
         icon: '',
-        target: 'menu1',
-        activeRule: '/micro/',
+        target: '',
+        activeRule: '',
         children: [
           {
             title: '三级菜单1',

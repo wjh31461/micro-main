@@ -1,30 +1,21 @@
 export function handleMenus (children, target) {
   let menus = []
-  recursiveMenu(children, target, menus)
+  recursiveMenu(children, menus)
   return menus
 }
 
-function recursiveMenu (children, target, arr) {
+function recursiveMenu (children, arr, key) {
   children.forEach((child, index) => {
-    let path
-    if (target) {
-      path = `/${target}/${child.target}`
-    } else {
-      path = `/${child.target}`
-    }
-    if (child.activeRule) {
-      path = child.activeRule.slice(0, child.activeRule.length - 1) + path
-    }
     arr.push({
       title: child.title,
       icon: child.icon ? child.icon : 'table',
-      target: child.target,
-      path: path,
+      path: child.activeRule ? child.activeRule + child.target : '',
+      key: key ? key + '-' + (index + 1) : index + 1,
       children: []
     })
     // 当存在次级菜单，继续递归处理
     if (child.children && child.children.length) {
-      recursiveMenu(child.children, target ? target + '/' + child.target : child.target, arr[index].children)
+      recursiveMenu(child.children, arr[index].children, arr[index].key)
     }
   })
 }
