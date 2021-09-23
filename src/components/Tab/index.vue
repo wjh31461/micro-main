@@ -27,6 +27,13 @@ export default {
           }
         }
       }
+    },
+    tabs: {
+      deep: true,
+      immediate: true,
+      handler: function (tabs) {
+        this.$bus.$emit('onUpdateLoadedApp', tabs)
+      }
     }
   },
   mounted () {

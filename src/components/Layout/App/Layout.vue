@@ -6,19 +6,23 @@
     </div>
     <!-- 子应用渲染容器 -->
     <div class="app-container">
-      微应用渲染区域
+      <!-- 动态渲染微应用挂载容器 -->
+      <!-- 实现多实例同时运行，实现跨应用的keepAlive功能 -->
+      <div v-for="app in apps" :key="app.name" :id="app.name"></div>
     </div>
   </div>
 </template>
 
 <script>
 import TAB from '@comp/Tab/index.vue'
+import apps from '@/micro/apps'
 
 export default {
   components: { TAB },
   data () {
     return {
-      theme: window.custom.menuTheme
+      theme: window.custom.menuTheme,
+      apps
     }
   }
 }
