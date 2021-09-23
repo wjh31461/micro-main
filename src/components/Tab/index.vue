@@ -20,7 +20,11 @@ export default {
         this.tabs = _.cloneDeep(tabs)
         // 计算activeTab
         if (!this.activeTab) {
-          this.activeTab = this.tabs.filter(tab => tab.path === this.$route.fullPath)[0].path
+          let tab = this.tabs.filter(tab => tab.path === this.$route.fullPath)[0]
+          if (tab) {
+            this.activeTab = tab.path
+            this.handleCloseOther(this.activeTab)
+          }
         }
       }
     }
@@ -80,10 +84,10 @@ export default {
         })
       }
     },
-    handleCloseOther (currentIndex) {
+    handleCloseOther (path) {
       if (this.tabs.length > 1) {
-        this.tabs.forEach((tab, index) => {
-          if (index !== currentIndex) {
+        this.tabs.forEach(tab => {
+          if (tab.path !== path) {
             this.handleClose(null, tab)
           }
         })
@@ -102,7 +106,7 @@ export default {
           this.handleCloseRight(index)
           break
         case 'other':
-          this.handleCloseOther(index)
+          this.handleCloseOther(this.tabs[index].path)
           break
         default:
           break

@@ -26,6 +26,7 @@ export default {
         } else {
           this.$emit('full', false)
         }
+        this.handleUpdate()
       }
     },
     $route: {
@@ -37,16 +38,24 @@ export default {
     }
   },
   methods: {
+    // 菜单栏点击事件
     handleClick (menu) {
       this.selectedKeys = [menu.key]
-      this.$router.push(menu.path)
-      this.$bus.$emit('onUpdateTab', menu)
+      if (this.$route.fullPath !== menu.path) {
+        this.$router.push(menu.path)
+        this.$bus.$emit('onUpdateTab', menu)
+      }
     },
+    // 菜单栏展开事件
     handleOpen (openKeys) {
       this.openKeys = openKeys
     },
+    // 更新菜单栏选中状态
     handleUpdate () {
       let self = this
+      // 初始化openKeys与selectedKeys
+      self.openKeys = []
+      self.selectedKeys = []
       let findCurrentMenu = function (menus) {
         menus.forEach(menu => {
           if (self.$route.fullPath === menu.path) {
@@ -60,7 +69,9 @@ export default {
           }
         })
       }
-      findCurrentMenu(self.menus)
+      if (self.menus.length) {
+        findCurrentMenu(self.menus)
+      }
     }
   },
   render () {

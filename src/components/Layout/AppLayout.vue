@@ -1,7 +1,7 @@
 <template>
   <a-layout class="layout-container">
     <!-- 布局顶部 -->
-    <a-layout-header :class="`layout-header ${theme}-layout-header`">
+    <a-layout-header class="layout-header">
       <layout-header></layout-header>
     </a-layout-header>
     <a-layout>
@@ -72,14 +72,8 @@ export default {
       transition: all 0.3s;
       box-shadow: 0px 3px 8px 0px rgba(185, 200, 210, 0.5);
       z-index: 100;
-    }
-    .light-layout-header{
       background: #fff;
       color: #999;
-    }
-    .dark-layout-header{
-      background: #001529;
-      color: #ddd;
     }
     .layout-sider{
       box-shadow: 3px 0px 8px 0px rgba(185, 200, 210, 0.5);

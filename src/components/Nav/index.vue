@@ -28,6 +28,7 @@ export default {
     }
   },
   methods: {
+    // 导航栏点击事件
     handleClick (nav) {
       this.$store.commit('user/SET_MENUS', nav.menus)
       this.selectedKeys = [nav.key]
@@ -37,6 +38,7 @@ export default {
         this.$bus.$emit('onUpdateTab', nav)
       }
     },
+    // 处理导航栏选中状态
     handleAcitve (route) {
       let self = this
       self.navs.forEach(nav => {
@@ -62,6 +64,7 @@ export default {
         }
       })
     },
+    // 更新侧边栏菜单数据
     handleUpdate (nav) {
       this.selectedKeys = [nav.key]
       this.$store.commit('user/SET_MENUS', nav.menus)
@@ -72,7 +75,7 @@ export default {
     
     const navProps = {
       mode: 'horizontal',
-      theme: window.custom.menuTheme,
+      theme: 'light',
       selectedKeys: self.selectedKeys
     }
 

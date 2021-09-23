@@ -70,6 +70,43 @@ const menu = [
     target: 'nav2',
     activeRule: '/micro/',
     children: []
+  },
+  {
+    title: '导航栏3',
+    icon: '',
+    target: '',
+    activeRule: '',
+    children: [
+      {
+        title: '二级菜单5',
+        icon: '',
+        target: '',
+        activeRule: '',
+        children: [
+          {
+            title: '三级菜单4',
+            icon: '',
+            target: 'subMenu4',
+            activeRule: '/micro/',
+            children: []
+          },
+          {
+            title: '三级菜单5',
+            icon: '',
+            target: 'subMenu5',
+            activeRule: '/micro/',
+            children: []
+          },
+          {
+            title: '三级菜单6',
+            icon: '',
+            target: 'subMenu6',
+            activeRule: '/micro/',
+            children: []
+          }
+        ]
+      }
+    ]
   }
 ]
 

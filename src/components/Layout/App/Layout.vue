@@ -1,7 +1,7 @@
 <template>
   <div class="content-container">
     <!-- tab组件容器 -->
-    <div :class="`tab-container ${theme}-tab-container`">
+    <div class="tab-container">
       <TAB></TAB>
     </div>
     <!-- 子应用渲染容器 -->
@@ -29,12 +29,6 @@ export default {
     height: 100%;
     .tab-container{
       height: 40px;
-    }
-    .light-tab-container{
-      background: #fff;
-    }
-    .dark-tab-container{
-      background: #001529;
     }
     .app-container{
       height: calc(~"100% - 40px");

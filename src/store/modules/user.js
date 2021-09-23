@@ -58,7 +58,8 @@ const user = {
     // 获取菜单
     Navigation ({ commit, state }) {
       let data = menu
-      let navs = []; let menus = []; let activeRule
+      let navs = []
+      let menus = []
       if (window.custom.menuLayout === 'nav') {
         // 导航栏模式布局
         data.forEach((nav, index) => {
