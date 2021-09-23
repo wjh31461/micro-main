@@ -1,4 +1,6 @@
 <script>
+import { generateOpenKeys } from '@/utils/menu'
+
 export default {
   data () {
     return {
@@ -16,7 +18,7 @@ export default {
     listenMenus: {
       deep: true,
       immediate: true,
-      handler (menus) {
+      handler: function (menus) {
         this.menus = _.cloneDeep(menus)
         // 如果当前没有菜单，则全屏展示content部分
         if (!this.menus.length) {
@@ -24,6 +26,13 @@ export default {
         } else {
           this.$emit('full', false)
         }
+      }
+    },
+    $route: {
+      deep: true,
+      immediate: true,
+      handler: function (route) {
+        this.handleUpdate()
       }
     }
   },
@@ -35,6 +44,23 @@ export default {
     },
     handleOpen (openKeys) {
       this.openKeys = openKeys
+    },
+    handleUpdate () {
+      let self = this
+      let findCurrentMenu = function (menus) {
+        menus.forEach(menu => {
+          if (self.$route.fullPath === menu.path) {
+            self.selectedKeys = [menu.key]
+            // 动态计算openKeys
+            self.openKeys = generateOpenKeys(menu.key)
+          } else {
+            if (menu.children && menu.children.length) {
+              return findCurrentMenu(menu.children)
+            }
+          }
+        })
+      }
+      findCurrentMenu(self.menus)
     }
   },
   render () {

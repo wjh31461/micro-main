@@ -18,6 +18,13 @@ export default {
       handler: function (navs) {
         this.navs = _.cloneDeep(navs)
       }
+    },
+    $route: {
+      deep: true,
+      immediate: true,
+      handler: function (route) {
+        this.handleAcitve(route)
+      }
     }
   },
   methods: {
@@ -29,6 +36,35 @@ export default {
         this.$router.push(nav.path)
         this.$bus.$emit('onUpdateTab', nav)
       }
+    },
+    handleAcitve (route) {
+      let self = this
+      self.navs.forEach(nav => {
+        if (nav.menus && nav.menus.length) {
+          // 存在子菜单
+          let findCurrentMenu = function (menus) {
+            menus.forEach(menu => {
+              if (route.fullPath === menu.path) {
+                self.handleUpdate(nav)
+              } else {
+                if (menu.children && menu.children.length) {
+                  return findCurrentMenu(menu.children)
+                }
+              }
+            })
+          }
+          findCurrentMenu(nav.menus)
+        } else {
+          // 不存在子菜单
+          if (route.fullPath === nav.path) {
+            self.handleUpdate(nav)
+          }
+        }
+      })
+    },
+    handleUpdate (nav) {
+      this.selectedKeys = [nav.key]
+      this.$store.commit('user/SET_MENUS', nav.menus)
     }
   },
   render () {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS } from '@/store/mutation-types'
+import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS, ACTIVE_TAB } from '@/store/mutation-types'
 import { handleMenus } from '@/utils/menu.js'
 import menu from '@/mock/menu.js' 
 
@@ -11,15 +11,8 @@ const user = {
     token: '',
     navs: [],
     menus: [],
-    routes: []
-  },
-  getters: {
-    username (state) {
-      return state.username
-    },
-    router (state) {
-      return state.routes
-    }
+    routes: [],
+    tabs: []
   },
   mutations: {
     SET_USER: (state, user) => {
@@ -44,6 +37,10 @@ const user = {
     },
     SET_ROUTES: (state, routes) => {
       state.routes = routes
+    },
+    SET_TABS: (state, tabs) => {
+      Vue.ss.set(TABS, tabs)
+      state.tabs = tabs
     }
   },
   actions: {
@@ -69,7 +66,7 @@ const user = {
             title: nav.title,
             icon: nav.icon ? nav.icon : 'table',
             path: nav.activeRule ? nav.activeRule + nav.target : '',
-            key: index + 1,
+            key: index.toString(),
             menus: []
           })
 

@@ -6,9 +6,10 @@ import {
   ACCESS_SECURITY,
   ACCESS_TOKEN,
   NAVS,
-  MENUS
+  MENUS,
+  TABS
 } from './mutation-types'
-const { user, selected } = config
+const { user } = config
 
 export default function initStore () {
   store.commit('user/SET_USER', Vue.ss.get(USER_NAME, user.user))
@@ -16,4 +17,5 @@ export default function initStore () {
   store.commit('user/SET_TOKEN', Vue.ss.get(ACCESS_TOKEN, user.token))
   store.commit('user/SET_NAVS', Vue.ss.get(NAVS, user.navs))
   store.commit('user/SET_MENUS', Vue.ss.get(MENUS, user.menus))
+  store.commit('user/SET_TABS', Vue.ss.get(TABS, user.tabs))
 }
