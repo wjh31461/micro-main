@@ -1,9 +1,11 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-// 全屏展示布局-登录
+// 全屏展示布局
 export default {
   
 }
