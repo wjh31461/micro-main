@@ -32,7 +32,7 @@ export default {
       deep: true,
       immediate: true,
       handler: function (tabs) {
-        this.$bus.$emit('onUpdateLoadedApp', tabs)
+        this.$bus.$emit('onUpdateLoadedApps', tabs)
       }
     }
   },

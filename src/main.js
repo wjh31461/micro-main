@@ -6,6 +6,7 @@ import './plugins'
 import { store, initStore } from './store/index'
 // vue-router
 import router from './router/index'
+// 全局样式
 import '@/styles/global.less'
 // 微前端
 import startQiankun from '@/micro/index'
@@ -30,7 +31,9 @@ new Vue({
 function initGlobalState () {
   actions.setGlobalState({
     // 当前已加载微应用，用于作为跨应用keepAlive的全局变量
-    'loadedApp': {}
+    'loadedApps': {},
+    // 当前所有微应用所需要对应的路由地址
+    'routes': {}
   })
 }
 
@@ -40,3 +43,7 @@ function render () {
     store.dispatch('user/Navigation')
   }
 }
+
+startQiankun({
+  prefetch: false
+})

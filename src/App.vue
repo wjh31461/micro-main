@@ -8,7 +8,7 @@
 
 <script>
 import { ViewLayout, AppLayout } from '@comp/Layout'
-import register from '@comp/register/index.vue'
+import register from '@comp/Register/index.vue'
 
 export default {
   name: 'App',

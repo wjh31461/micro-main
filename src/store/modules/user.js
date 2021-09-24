@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS, ACTIVE_TAB } from '@/store/mutation-types'
-import { handleMenus } from '@/utils/menu.js'
+import { handleMenus, generateRoutes } from '@/utils/menu.js'
 import menu from '@/mock/menu.js' 
 
 const user = {
@@ -56,8 +56,10 @@ const user = {
       
     },
     // 获取菜单
-    Navigation ({ commit, state }) {
+    Navigation ({ commit, state, dispatch }) {
       let data = menu
+      // 整理各个微应用的路由信息
+      dispatch('GenerateRoutes', data)
       let navs = []
       let menus = []
       if (window.custom.menuLayout === 'nav') {
@@ -83,9 +85,10 @@ const user = {
         commit('SET_MENUS', menus)
       }
     },
-    // 动态路由
-    GenerateRoutes ({ commit }) {
-      
+    // 将菜单的层级结构，拆分成各个微应用的map结构
+    GenerateRoutes ({ commit }, data) {
+      let routes = generateRoutes(data)
+      commit('SET_ROUTES', routes)
     }
   }
 }
