@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS } from '@/store/mutation-types'
-import { handleMenus, generateRoutes } from '@/utils/menu.js'
+import { handleMenus, generateRoutes, generateActiveRule } from '@/utils/menu.js'
 import menu from '@/mock/menu.js' 
 
 const user = {
@@ -11,8 +11,7 @@ const user = {
     token: '',
     navs: [],
     menus: [],
-    routes: [],
-    tabs: []
+    routes: []
   },
   mutations: {
     SET_USER: (state, user) => {
@@ -37,10 +36,6 @@ const user = {
     },
     SET_ROUTES: (state, routes) => {
       state.routes = routes
-    },
-    SET_TABS: (state, tabs) => {
-      Vue.ss.set(TABS, tabs)
-      state.tabs = tabs
     }
   },
   actions: {
@@ -57,33 +52,38 @@ const user = {
     },
     // 获取菜单
     Navigation ({ commit, state, dispatch }) {
-      let data = menu
-      // 整理各个微应用的路由信息
-      dispatch('GenerateRoutes', data)
-      let navs = []
-      let menus = []
-      if (window.custom.menuLayout === 'nav') {
+      return new Promise((resolve, reject) => {
+        let data = menu
+        // 整理各个微应用的路由信息
+        dispatch('GenerateRoutes', data)
+        let navs = []
+        let menus = []
+        // 进入系统后首个加载的微应用activeRule
+        let activeRule = generateActiveRule(window.custom.activeRule, data)
+        if (window.custom.menuLayout === 'nav') {
         // 导航栏模式布局
-        data.forEach((nav, index) => {
-          navs.push({
-            title: nav.title,
-            icon: nav.icon ? nav.icon : 'table',
-            path: nav.activeRule ? nav.activeRule + nav.target : '',
-            key: index.toString(),
-            menus: []
-          })
+          data.forEach((nav, index) => {
+            navs.push({
+              title: nav.title,
+              icon: nav.icon ? nav.icon : 'table',
+              path: nav.activeRule ? nav.activeRule + nav.target : '',
+              key: index.toString(),
+              menus: []
+            })
 
-          if (nav.children && nav.children.length) {
+            if (nav.children && nav.children.length) {
             // 如果存在子菜单
-            navs[index].menus = handleMenus(nav.children)
-          }
-        })
-        commit('SET_NAVS', navs)
-      } else if (window.custom.menuLayout === 'menu') {
+              navs[index].menus = handleMenus(nav.children)
+            }
+          })
+          commit('SET_NAVS', navs)
+        } else if (window.custom.menuLayout === 'menu') {
         // 侧边栏模式布局
-        menus = handleMenus(data)
-        commit('SET_MENUS', menus)
-      }
+          menus = handleMenus(data)
+          commit('SET_MENUS', menus)
+        }
+        resolve(activeRule)
+      })
     },
     // 将菜单的层级结构，拆分成各个微应用的map结构
     GenerateRoutes ({ commit }, data) {

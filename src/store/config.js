@@ -5,8 +5,7 @@ export default {
     token: '',
     navs: [],
     menus: [],
-    routes: [],
-    tabs: []
+    routes: []
   },
   micro: {
     loading: false

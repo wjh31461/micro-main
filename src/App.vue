@@ -18,17 +18,12 @@ export default {
       // 全部配置微应用信息
       apps,
       // 当前已加载的微应用信息
-      loadedApps: {},
-      // 当前已加载的tab页面
-      tabs: []
+      loadedApps: {}
     }
   },
   computed: {
     listenRoutes () {
       return this.$store.state.user.routes
-    },
-    listenTabs () {
-      return this.$store.state.user.tabs
     }
   },
   watch: {
@@ -36,15 +31,9 @@ export default {
       deep: true,
       immediate: true,
       handler: function (routes) {
-        actions.setGlobalState({ 'routes': routes })
-      }
-    },
-    listenTabs: {
-      deep: true,
-      immediate: true,
-      handler: function (tabs) {
-        this.tabs = _.cloneDeep(tabs)
-        this.updateLoadedApps()
+        if (Object.keys(routes).length) {
+          this.routes = _.cloneDeep(routes)
+        }
       }
     },
     $route: {
@@ -57,42 +46,46 @@ export default {
       }
     }
   },
+  mounted () {
+    let self = this
+
+    self.$bus.$on('onUpdateLoadedAppsRoutes', function (tabs) {
+      self.updateLoadedApps(tabs)
+    })
+  },
+  beforeDestroy () {
+    this.$bus.$off('onUpdateLoadedAppsRoutes')
+  },
   methods: {
     // 微应用加载
     loadApp (route) {
       let self = this
-      return new Promise((resolve, reject) => {
-        let microApp = apps.filter(app => route.fullPath.includes(app.activeRule))[0]
-        if (!self.loadedApps[microApp.name]) {
-          self.$store.commit('micro/SET_LOADING', true)
-          // 如果当前未加载该应用
-          let app = loadMicroApp(microApp)
-          self.loadedApps[microApp.name] = {
-            app,
-            routes: []
-          }
-          app.mountPromise.then(() => {
-            self.$store.commit('micro/SET_LOADING', false)
-            resolve(microApp.name)
-          })
-        } else {
-          // 如果该微应用已经被加载过
-          let app = self.loadedApps[microApp.name].app
-          // 获取当前该子应用状态，当状态为NOT_MOUNTED时，从新触发该子应用的mount生命周期
-          if (app.getStatus() === 'NOT_MOUNTED') {
-            app.mount().then(() => {
-              resolve(microApp.name)
-            })
-          } else {
-            resolve()
-          }
+      let microApp = apps.filter(app => route.fullPath.includes(app.activeRule))[0]
+      if (!self.loadedApps[microApp.name]) {
+        self.$store.commit('micro/SET_LOADING', true)
+        // 如果当前未加载该应用
+        let app = loadMicroApp(microApp)
+        self.loadedApps[microApp.name] = {
+          app,
+          routes: []
         }
-      }).then((app) => {
-        self.updateLoadedApps()
-      })
+        app.mountPromise.then(() => {
+          self.$store.commit('micro/SET_LOADING', false)
+          actions.setGlobalState({ 'routes': self.routes })
+        })
+      } else {
+        // 如果该微应用已经被加载过
+        let app = self.loadedApps[microApp.name].app
+        // 获取当前该子应用状态，当状态为NOT_MOUNTED时，从新触发该子应用的mount生命周期
+        if (app.getStatus() === 'NOT_MOUNTED') {
+          app.mount().then(() => {
+            actions.setGlobalState({ 'routes': self.routes })
+          })
+        }
+      }
     },
     // 根据tab组件修改当前loadedApps中的routes，传递给微应用完成keepAlive的渲染
-    updateLoadedApps () {
+    updateLoadedApps (tabs) {
       let self = this
       let keys = Object.keys(self.loadedApps)
       if (!keys.length) return
@@ -101,10 +94,11 @@ export default {
         self.loadedApps[key].routes = []
       })
       // 根据当前key与传递的tab信息记录路由缓存记录
-      self.tabs.forEach(tab => {
+      tabs.forEach(tab => {
         let key = keys.filter(key => tab.path.includes(key))[0]
         self.loadedApps[key].routes.push(tab.path)
       })
+
       // 判断当前是否存在微应用已经关闭了所有tab页，如果存在则触发该微应用的unmount事件
       Promise.all(keys.map(key => {
         return new Promise((resolve, reject) => {

@@ -8,22 +8,26 @@ export default {
     }
   },
   computed: {
-    listenTabs () {
-      return this.$store.state.user.tabs
-    }
   },
   watch: {
-    listenTabs: {
+    $route: {
       deep: true,
       immediate: true,
-      handler: function (tabs) {
-        this.tabs = _.cloneDeep(tabs)
-        // 计算activeTab
-        if (!this.activeTab) {
-          let tab = this.tabs.filter(tab => tab.path === this.$route.fullPath)[0]
-          if (tab) {
-            this.activeTab = tab.path
-            this.handleCloseOther(this.activeTab)
+      handler: function (route) {
+        let temp = route.fullPath.split('/')
+        temp.shift()
+        // 获取appName和target值
+        let appName = temp[0]
+        let target = temp[1]
+        // 获取所有路由
+        let routes = this.$store.state.user.routes[appName]
+        if (routes && routes.length) {
+          let currentRoute = routes.filter(item => item.target === target)[0]
+          if (currentRoute) {
+            this.handleUpdate({
+              title: currentRoute.title,
+              path: currentRoute.activeRule + currentRoute.target
+            }) 
           }
         }
       }
@@ -48,7 +52,7 @@ export default {
         })
       }
       this.activeTab = data.path
-      this.$store.commit('user/SET_TABS', this.tabs)
+      this.onUpdateLoadedApps()
     },
     // 点击tab页的路由跳转
     handleChange (path) {
@@ -93,6 +97,9 @@ export default {
         })
       }
     },
+    handleCloseAll () {
+      this.tabs = []
+    },
     // 右键tab页的批量关闭
     handleMenuClose (type, index) {
       switch (type) {
@@ -119,7 +126,11 @@ export default {
         this.activeTab = this.tabs[this.tabs.length - 1].path
         this.handleChange(this.activeTab)
       }
-      this.$store.commit('user/SET_TABS', this.tabs)
+      this.onUpdateLoadedApps()
+    },
+    // 传递tabs信息，更新loadedApps
+    onUpdateLoadedApps () {
+      this.$bus.$emit('onUpdateLoadedAppsRoutes', this.tabs)
     }
   },
   render () {

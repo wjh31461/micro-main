@@ -39,6 +39,35 @@ function recursiveRoutes (data, map) {
     }
   })
 }
+// 获取当前可加载的activeRule集合
+export function generateActiveRule (rules, data) {
+  // 当前菜单数据中存在的所有activeRule集合
+  let arr = []
+  // 递归遍历
+  function handleRules (list) {
+    list.forEach(item => {
+      // 当该条数据存在activeRule，且集合中不存在该字段
+      if (item.activeRule && !arr.includes(item.activeRule)) {
+        arr.push(item.activeRule)
+      }
+      if (item.children && item.children.length) {
+        return handleRules(item.children)
+      }
+    }) 
+  }
+  handleRules(data)
+  
+  // 遍历前端配置rules，按序寻找第一个存在的activeRule作为默认加载项目
+  try {
+    rules.forEach(rule => {
+      if (arr.includes(rule)) {
+        throw new Error(rule)
+      }
+    })
+  } catch (error) {
+    return error.message
+  }
+}
 // 计算菜单openKeys
 export function generateOpenKeys (key) {
   let openKeys = []

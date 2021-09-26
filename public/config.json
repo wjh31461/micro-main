@@ -11,12 +11,12 @@
 
   },
   "custom": {
-    "activeRule": [],
+    "activeRule": ["/micro-sample/"],
     "systemName": "Micro-Main",
     "copyright": "jinghaihan",
     "menuLayout": "nav",
     "menuTheme": "light",
     "keepAlive": false,
-    "hasLogin": false
+    "needLogin": false
   }
 }

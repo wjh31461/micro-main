@@ -19,7 +19,6 @@ export default function initStore () {
   store.commit('user/SET_TOKEN', Vue.ss.get(ACCESS_TOKEN, user.token))
   store.commit('user/SET_NAVS', Vue.ss.get(NAVS, user.navs))
   store.commit('user/SET_MENUS', Vue.ss.get(MENUS, user.menus))
-  store.commit('user/SET_TABS', Vue.ss.get(TABS, user.tabs))
 
   // micro
   store.commit('micro/SET_LOADING', Vue.ss.get(MICRO_LOADING, micro.loading))
