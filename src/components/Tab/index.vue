@@ -7,23 +7,23 @@ export default {
 
     }
   },
-  computed: {
-  },
   watch: {
     $route: {
       deep: true,
       immediate: true,
-      handler: function (route) {
-        let temp = route.fullPath.split('/')
-        temp.shift()
+      handler: function (to, from) {
+        if (!from) return
         // 获取appName和target值
-        let appName = temp[0]
-        let target = temp[1]
-        // 获取所有路由
+        let arr = to.fullPath.split('/')
+        arr.shift()
+        let appName = arr[0]
+        let target = arr[1]
+        // 获取当前微应用的所有路由
         let routes = this.$store.state.user.routes[appName]
         if (routes && routes.length) {
           let currentRoute = routes.filter(item => item.target === target)[0]
           if (currentRoute) {
+            // 更新tab组件显示
             this.handleUpdate({
               title: currentRoute.title,
               path: currentRoute.activeRule + currentRoute.target
@@ -32,15 +32,6 @@ export default {
         }
       }
     }
-  },
-  mounted () {
-    let self = this
-    self.$bus.$on('onUpdateTab', function (data) {
-      self.handleUpdate(data)
-    })
-  },
-  beforeDestroy () {
-    this.$bus.$off('onUpdateTab')
   },
   methods: {
     // 由导航栏/菜单导致的tab更新
