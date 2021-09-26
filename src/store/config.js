@@ -7,5 +7,8 @@ export default {
     menus: [],
     routes: [],
     tabs: []
+  },
+  micro: {
+    loading: false
   }
 }

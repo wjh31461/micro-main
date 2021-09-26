@@ -64,6 +64,7 @@ export default {
       return new Promise((resolve, reject) => {
         let microApp = apps.filter(app => route.fullPath.includes(app.activeRule))[0]
         if (!self.loadedApps[microApp.name]) {
+          self.$store.commit('micro/SET_LOADING', true)
           // 如果当前未加载该应用
           let app = loadMicroApp(microApp)
           self.loadedApps[microApp.name] = {
@@ -71,6 +72,7 @@ export default {
             routes: []
           }
           app.mountPromise.then(() => {
+            self.$store.commit('micro/SET_LOADING', false)
             resolve(microApp.name)
           })
         } else {

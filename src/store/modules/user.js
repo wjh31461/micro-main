@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS, ACTIVE_TAB } from '@/store/mutation-types'
+import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS } from '@/store/mutation-types'
 import { handleMenus, generateRoutes } from '@/utils/menu.js'
 import menu from '@/mock/menu.js' 
 
