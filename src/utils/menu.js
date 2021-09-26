@@ -1,43 +1,43 @@
 // 递归整理菜单结构
 export function handleMenus (children, target) {
   let menus = []
+  function recursiveMenus (children, arr, key) {
+    children.forEach((child, index) => {
+      arr.push({
+        title: child.title,
+        icon: child.icon ? child.icon : 'table',
+        path: child.activeRule ? child.activeRule + child.target : '',
+        key: (key ? key + '-' + index : index).toString(),
+        children: []
+      })
+      // 当存在次级菜单，继续递归处理
+      if (child.children && child.children.length) {
+        return recursiveMenus(child.children, arr[index].children, arr[index].key)
+      }
+    })
+  }
   recursiveMenus(children, menus)
   return menus
-}
-function recursiveMenus (children, arr, key) {
-  children.forEach((child, index) => {
-    arr.push({
-      title: child.title,
-      icon: child.icon ? child.icon : 'table',
-      path: child.activeRule ? child.activeRule + child.target : '',
-      key: (key ? key + '-' + index : index).toString(),
-      children: []
-    })
-    // 当存在次级菜单，继续递归处理
-    if (child.children && child.children.length) {
-      recursiveMenus(child.children, arr[index].children, arr[index].key)
-    }
-  })
 }
 // 计算各个微应用路由
 export function generateRoutes (data) {
   let routes = {}
+  function recursiveRoutes (data, map) {
+    data.forEach((item, index) => {
+      // 如果当前数据存在activeRule，则证明其为子应用的页面
+      let key = item.activeRule.replace(/[/]/g, '')
+      if (key) {
+        if (!map[key]) map[key] = []
+        map[key].push(item)
+      }
+      // 如果当前存在
+      if (item.children && item.children.length) {
+        return recursiveRoutes(item.children, map)
+      }
+    })
+  }
   recursiveRoutes(data, routes)
   return routes
-}
-function recursiveRoutes (data, map) {
-  data.forEach((item, index) => {
-    // 如果当前数据存在activeRule，则证明其为子应用的页面
-    let key = item.activeRule.replace(/[/]/g, '')
-    if (key) {
-      if (!map[key]) map[key] = []
-      map[key].push(item)
-    }
-    // 如果当前存在
-    if (item.children && item.children.length) {
-      recursiveRoutes(item.children, map)
-    }
-  })
 }
 // 获取当前可加载的activeRule集合
 export function generateActiveRule (rules, data) {

@@ -12,7 +12,7 @@
   },
   "custom": {
     "activeRule": ["/micro-sample/"],
-    "systemName": "Micro-Main",
+    "systemName": "micro-main",
     "copyright": "jinghaihan",
     "menuLayout": "nav",
     "menuTheme": "light",
