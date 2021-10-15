@@ -1,24 +1,28 @@
 <template>
   <div id="app">
-    <app-layout></app-layout>
+    <!-- 全屏样式布局-登陆页 -->
+    <view-layout v-show="isLogin"></view-layout>
+    <!-- 系统内部布局 -->
+    <app-layout v-show="!isLogin"></app-layout>
   </div>
 </template>
 
 <script>
-import { AppLayout } from '@comp/Layout'
+import { ViewLayout, AppLayout } from '@comp/Layout'
 import { loadMicroApp } from 'qiankun'
 import apps from '@/micro/apps'
 import actions from '@/micro/actions'
 
 export default {
   name: 'App',
-  components: { AppLayout },
+  components: { ViewLayout, AppLayout },
   data () {
     return {
       // 全部配置微应用信息
       apps,
       // 当前已加载的微应用信息
-      loadedApps: {}
+      loadedApps: {},
+      isLogin: true
     }
   },
   computed: {
@@ -41,9 +45,23 @@ export default {
       immediate: true,
       handler: function (route) {
         if (route.fullPath !== '/') {
-          this.loadApp(route)
+          if (route.name !== 'login') {
+            this.isLogin = false
+            this.loadApp(route)
+          } else {
+            this.isLogin = true
+          }
         }
       }
+    }
+  },
+  created () {
+    if (window.custom.needLogin) {
+      // 需要登录
+      this.isLogin = true
+    } else {
+      // 不需要登录
+      this.isLogin = false
     }
   },
   mounted () {

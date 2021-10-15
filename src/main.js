@@ -38,11 +38,14 @@ function initGlobalState () {
 }
 
 function render () {
-  // 如果不存在登录页面，直接加载页面
-  if (!window.customElements.needLogin) {
+  if (!window.custom.needLogin) {
+    // 如果不存在登录页面，直接加载页面
     store.dispatch('user/Navigation').then((activeRule) => {
       router.push(activeRule)
     })
+  } else {
+    // 如果存在登录页面，则先进入登录页面
+    router.push('/login')
   }
 }
 

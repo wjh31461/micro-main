@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS, TABS } from '@/store/mutation-types'
+import { USER_NAME, ACCESS_SECURITY, ACCESS_TOKEN, NAVS, MENUS } from '@/store/mutation-types'
 import { handleMenus, generateRoutes, generateActiveRule } from '@/utils/menu.js'
 import menu from '@/mock/menu.js' 
 
@@ -61,7 +61,7 @@ const user = {
         // 进入系统后首个加载的微应用activeRule
         let activeRule = generateActiveRule(window.custom.activeRule, data)
         if (window.custom.menuLayout === 'nav') {
-        // 导航栏模式布局
+          // 导航栏模式布局
           data.forEach((nav, index) => {
             navs.push({
               title: nav.title,
@@ -78,7 +78,7 @@ const user = {
           })
           commit('SET_NAVS', navs)
         } else if (window.custom.menuLayout === 'menu') {
-        // 侧边栏模式布局
+          // 侧边栏模式布局
           menus = handleMenus(data)
           commit('SET_MENUS', menus)
         }
