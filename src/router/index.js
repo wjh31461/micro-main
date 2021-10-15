@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from './routes'
+import defaultRoutes from './routes'
 // import NProgress from 'nprogress'
 // import 'nprogress/nprogress.css'
 
@@ -10,7 +10,7 @@ function createRouter () {
   return new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes: defaultRoutes
   })
 }
 

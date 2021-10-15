@@ -1,4 +1,4 @@
-const routes = [
+const defaultRoutes = [
   {
     path: '/login',
     name: 'login',
@@ -6,4 +6,4 @@ const routes = [
   }
 ]
 
-export default routes
+export default defaultRoutes
