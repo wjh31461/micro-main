@@ -11,6 +11,7 @@ import '@/styles/global.less'
 // 微前端
 import startQiankun from '@/micro/index'
 import actions from '@/micro/actions'
+import { initSharedComponents } from '@/micro/shared'
 
 Vue.config.productionTip = false
 
@@ -23,6 +24,8 @@ new Vue({
     initStore()
     // 初始化qiankun globalstate
     initGlobalState()
+    // 初始化共享组件
+    initSharedComponents()
     // 根据配置进行渲染
     render()
   }
