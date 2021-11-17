@@ -56,7 +56,7 @@ export default {
     }
   },
   created () {
-    if (window.custom.needLogin) {
+    if (window.custom.loginPage) {
       // 需要登录
       this.isLogin = true
     } else {

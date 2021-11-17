@@ -38,7 +38,7 @@ function initGlobalState () {
 }
 
 function render () {
-  if (!window.custom.needLogin) {
+  if (!window.custom.loginPage) {
     // 如果不存在登录页面，直接加载页面
     store.dispatch('user/Navigation').then((activeRule) => {
       router.push(activeRule)
