@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
     if (to.name === 'login') {
       next()
     } else {
-      next({ path: '/login' })
+      next({ name: 'login' })
     }
     Vue.ss.set('loggedIn', false)
   }
@@ -41,7 +41,12 @@ function handleBeforeEach (to, from, next) {
   }
   // 处理路由信息后进行跳转
   store.dispatch('user/Navigation').then((activeRule) => {
-    next()
+    next({
+      name: 'prefetch',
+      params: {
+        activeRule: activeRule
+      }
+    })
   })
 }
 

@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <!-- 全屏样式布局-登陆页 -->
-    <view-layout v-show="isLogin"></view-layout>
+    <!-- 全屏样式布局-登陆页/预加载遮罩蒙层 -->
+    <view-layout v-show="isViewLayout"></view-layout>
     <!-- 系统内部布局 -->
-    <app-layout v-show="!isLogin"></app-layout>
+    <app-layout v-show="!isViewLayout"></app-layout>
   </div>
 </template>
 
@@ -20,11 +20,15 @@ export default {
     return {
       // 全部配置微应用信息
       apps,
+      // 是否预加载完毕
+      prefetched: false,
       // 当前已加载的微应用信息
       loadedApps: {},
       // 全部微应用路由信息
       routes: {},
-      isLogin: true
+      // 是否viewLayout展示
+      isViewLayout: true,
+      viewLayoutList: ['login', 'prefetch']
     }
   },
   computed: {
@@ -47,11 +51,13 @@ export default {
       immediate: true,
       handler: function (route) {
         if (route.fullPath !== '/') {
-          if (route.name !== 'login') {
-            this.isLogin = false
-            this.loadApp(route)
+          if (!this.viewLayoutList.includes(route.name)) {
+            this.isViewLayout = false
+            if (this.prefetched) {
+              this.loadApp(route)
+            }
           } else {
-            this.isLogin = true
+            this.isViewLayout = true
           }
         }
       }
@@ -59,23 +65,30 @@ export default {
   },
   created () {
     // 不需要登录
-    if (!window.custom.loginPage) {
-      this.isLogin = false
-    }
+    // if (!window.custom.loginPage) {
+    //   this.isViewLayout = false
+    // }
   },
   mounted () {
     let self = this
+
+    self.$bus.$on('onUpdateLoadedApps', function (data) {
+      self.loadedApps = _.cloneDeep(data)
+      // 预加载完成
+      self.prefetched = true
+    })
 
     self.$bus.$on('onUpdateLoadedAppsRoutes', function (tabs) {
       self.updateLoadedApps(tabs)
     })
   },
   beforeDestroy () {
+    this.$bus.$off('onUpdateLoadedApps')
     this.$bus.$off('onUpdateLoadedAppsRoutes')
   },
   methods: {
     // 微应用加载
-    loadApp (route) {
+    async loadApp (route) {
       let self = this
       let microApp = apps.filter(app => route.fullPath.includes(app.activeRule))[0]
       if (!self.loadedApps[microApp.name]) {
@@ -86,18 +99,16 @@ export default {
           app,
           routes: []
         }
-        app.mountPromise.then(() => {
-          self.$store.commit('micro/SET_LOADING', false)
-          actions.setGlobalState({ 'routes': self.routes })
-        })
+        await app.mountPromise
+        self.$store.commit('micro/SET_LOADING', false)
+        actions.setGlobalState({ 'routes': self.routes })
       } else {
         // 如果该微应用已经被加载过
         let app = self.loadedApps[microApp.name].app
         // 获取当前该子应用状态，当状态为NOT_MOUNTED时，从新触发该子应用的mount生命周期
         if (app.getStatus() === 'NOT_MOUNTED') {
-          app.mount().then(() => {
-            actions.setGlobalState({ 'routes': self.routes })
-          })
+          await app.mount()
+          actions.setGlobalState({ 'routes': self.routes })
         }
       }
     },
@@ -118,13 +129,12 @@ export default {
 
       // 判断当前是否存在微应用已经关闭了所有tab页，如果存在则触发该微应用的unmount事件
       Promise.all(keys.map(key => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
           if (!self.loadedApps[key].routes.length) {
             // 如果该微应用的状态为MOUNTED，则卸载改微应用，释放占用资源
             if (self.loadedApps[key].app.getStatus() === 'MOUNTED') {
-              self.loadedApps[key].app.unmount().then(() => {
-                resolve()
-              })
+              await self.loadedApps[key].app.unmount()
+              resolve()
             } else {
               resolve()
             }

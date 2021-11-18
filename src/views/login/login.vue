@@ -82,7 +82,12 @@ export default {
         if (err) return
         self.$store.dispatch('user/Navigation').then((activeRule) => {
           Vue.ss.set('loggedIn', true)
-          self.$router.push(activeRule)
+          self.$router.push({
+            name: 'prefetch',
+            params: {
+              activeRule: activeRule
+            }
+          })
         })
       })
     },

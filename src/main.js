@@ -45,11 +45,17 @@ function render () {
   // 如果不存在登录页面，直接加载页面
   if (!window.custom.loginPage) {
     store.dispatch('user/Navigation').then((activeRule) => {
-      router.push(activeRule)
+      router.push({
+        name: 'prefetch',
+        params: {
+          activeRule: activeRule
+        }
+      })
     })
   }
 }
 
 startQiankun({
-  prefetch: false
+  prefetch: false,
+  sandbox: { strictStyleIsolation: true }
 })
