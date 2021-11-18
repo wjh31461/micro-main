@@ -7,7 +7,6 @@ import {
   ACCESS_TOKEN,
   NAVS,
   MENUS,
-  TABS,
   MICRO_LOADING
 } from './mutation-types'
 const { user, micro } = config

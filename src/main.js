@@ -11,7 +11,8 @@ import '@/styles/global.less'
 // 微前端
 import startQiankun from '@/micro/index'
 import actions from '@/micro/actions'
-import { initSharedComponents } from '@/micro/shared'
+// 共享组件
+import { initSharedComponent } from '@/micro/shared'
 
 Vue.config.productionTip = false
 
@@ -25,7 +26,7 @@ new Vue({
     // 初始化qiankun globalstate
     initGlobalState()
     // 初始化共享组件
-    initSharedComponents()
+    initSharedComponent()
     // 根据配置进行渲染
     render()
   }
@@ -41,14 +42,11 @@ function initGlobalState () {
 }
 
 function render () {
+  // 如果不存在登录页面，直接加载页面
   if (!window.custom.loginPage) {
-    // 如果不存在登录页面，直接加载页面
     store.dispatch('user/Navigation').then((activeRule) => {
       router.push(activeRule)
     })
-  } else {
-    // 如果存在登录页面，则先进入登录页面
-    router.push('/login')
   }
 }
 

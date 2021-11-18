@@ -22,6 +22,8 @@ export default {
       apps,
       // 当前已加载的微应用信息
       loadedApps: {},
+      // 全部微应用路由信息
+      routes: {},
       isLogin: true
     }
   },
@@ -56,11 +58,8 @@ export default {
     }
   },
   created () {
-    if (window.custom.loginPage) {
-      // 需要登录
-      this.isLogin = true
-    } else {
-      // 不需要登录
+    // 不需要登录
+    if (!window.custom.loginPage) {
       this.isLogin = false
     }
   },
