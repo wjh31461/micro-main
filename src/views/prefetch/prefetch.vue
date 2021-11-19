@@ -53,7 +53,7 @@ export default {
           // 不触发mount生命周期，直接进行卸载
           await app.unmount()
           count++
-          handlePercent('last', microApp.name)
+          handlePercent('unmounted', microApp.name)
           resolve()
         })
       })).then(() => {
@@ -66,7 +66,7 @@ export default {
       function handlePercent (step, name) {
         self.percent += parseInt((1 / apps.length / stepCount) * 100)
         // 加载最后一个微应用
-        if (count === apps.length && step === 'last') {
+        if (count === apps.length && step === 'unmounted') {
           self.percent = 100
         }
       }
@@ -84,7 +84,7 @@ export default {
     left: 0;
     z-index: 1000;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.8);
     .spin-container{
       height: 100%;
       width: 100%;
