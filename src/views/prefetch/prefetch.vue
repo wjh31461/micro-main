@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { loadMicroApp } from 'qiankun'
 import apps from '@/micro/apps'
 
@@ -41,7 +40,6 @@ export default {
 
       Promise.all(apps.map(microApp => {
         return new Promise(async (resolve, reject) => {
-          count++
           handlePercent()
           let app = loadMicroApp(microApp)
           loadedApps[microApp.name] = {
@@ -54,20 +52,19 @@ export default {
           handlePercent()
           // 不触发mount生命周期，直接进行卸载
           await app.unmount()
-          handlePercent('last')
+          count++
+          handlePercent('last', microApp.name)
           resolve()
         })
       })).then(() => {
         // 传递loadedApps，防止重复加载
         self.$bus.$emit('onUpdateLoadedApps', loadedApps)
-        setTimeout(() => {
-          self.spinning = false
-          self.$router.push(self.activeRule)
-        }, 500)
+        self.spinning = false
+        self.$router.push(self.activeRule)
       })
 
-      function handlePercent (step) {
-        self.percent += Math.floor(count / apps.length / stepCount) * 100
+      function handlePercent (step, name) {
+        self.percent += parseInt((1 / apps.length / stepCount) * 100)
         // 加载最后一个微应用
         if (count === apps.length && step === 'last') {
           self.percent = 100
@@ -95,7 +92,7 @@ export default {
       justify-content: center;
       align-items: center;
       .spin-icon{
-        font-size: 100px;
+        font-size: 120px;
       }
       .spin-percent{
         color: #fff;

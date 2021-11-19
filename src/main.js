@@ -56,6 +56,6 @@ function render () {
 }
 
 startQiankun({
-  prefetch: false,
-  sandbox: { strictStyleIsolation: true }
+  prefetch: false
+  // sandbox: { strictStyleIsolation: true }
 })
