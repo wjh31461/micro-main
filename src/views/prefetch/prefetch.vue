@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { loadMicroApp } from 'qiankun'
 import apps from '@/micro/apps'
 
@@ -60,9 +61,11 @@ export default {
         // 传递loadedApps，防止重复加载
         self.$bus.$emit('onUpdateLoadedApps', loadedApps)
         self.spinning = false
-        self.$router.push(self.activeRule)
+        // 判断是否存在路由地址缓存，否则重定向至根目录
+        let routePath = Vue.ss.get('routePath')
+        self.$router.push(routePath || self.activeRule)
       })
-
+      // 计算进度
       function handlePercent (step, name) {
         self.percent += parseInt((1 / apps.length / stepCount) * 100)
         // 加载最后一个微应用

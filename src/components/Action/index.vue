@@ -18,7 +18,8 @@ export default {
   created () {
     let self = this
     
-    self.$bus.on('onSharedComponentChange', function (value) {
+    window.addEventListener('onSharedComponentChange', function (e) {
+      let value = e.detail
       if (value['micro-sample'] && value['micro-sample'].HelloWorld) {
         Vue.component('HelloWorld', value['micro-sample'].HelloWorld)
         self.HelloWorld = true

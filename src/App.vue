@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { ViewLayout, AppLayout } from '@comp/Layout'
 import { loadMicroApp } from 'qiankun'
 import apps from '@/micro/apps'
@@ -28,6 +29,7 @@ export default {
       routes: {},
       // 是否viewLayout展示
       isViewLayout: true,
+      // 属于主应用viewLayout的路由名称
       viewLayoutList: ['login', 'prefetch']
     }
   },
@@ -56,7 +58,13 @@ export default {
             if (this.prefetched) {
               this.loadApp(route)
             }
+            // 记录路由修改位置，实现刷新位置重定向
+            Vue.ss.set('routePath', route.path)
           } else {
+            // 清空路由信息，防止再次登录后定向错误
+            if (route.name === 'login') {
+              Vue.ss.set('routePath', '')
+            }
             this.isViewLayout = true
           }
         }
@@ -64,10 +72,7 @@ export default {
     }
   },
   created () {
-    // 不需要登录
-    // if (!window.custom.loginPage) {
-    //   this.isViewLayout = false
-    // }
+    
   },
   mounted () {
     let self = this
